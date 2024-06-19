@@ -11,6 +11,8 @@ $letters = array_merge(range('A', 'Z'), range('a', 'z'));
 $numbers = range(0, 9);
 $symbols = str_split('!@#$%^&*()_+-=[]{}|;:,.<>/?');
 
+$characters = [];
+
 if (in_array('letters', $_SESSION['check'])) {
     $characters = array_merge($characters, $letters);
 }
@@ -20,6 +22,7 @@ if (in_array('numbers', $_SESSION['check'])) {
 if (in_array('symbols', $_SESSION['check'])) {
     $characters = array_merge($characters, $symbols);
 }
+
 
 if (!empty($characters)) {
     $_SESSION['password'] = generatePassword($_SESSION['pass_length'], $characters);

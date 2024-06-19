@@ -1,8 +1,15 @@
 <?php
-$pass_length = $_GET['password_length'];
-$characters = array_merge(range('A', 'Z'), range('a', 'z'), range(0, 9), str_split('!@#$%^&*()_+-=[]{}|;:,.<>/?'));
+session_start();
 
 include 'functions.php';
+
+$pass_length = $_GET['password_length'];
+$characters = array_merge(range('A', 'Z'), range('a', 'z'), range(0, 9), str_split('!@#$%^&*()_+-=[]{}|;:,.<>/?'));
+$_SESSION['password'] = generatePassword($pass_length, $characters);
+
+if (isset($pass_length)) {
+    header('Location: ./password.php');
+}
 ?>
 
 <!DOCTYPE html>
@@ -20,8 +27,9 @@ include 'functions.php';
         <h1>Password Generator</h1>
         <form action="index.php" method="GET">
             <input type="text" name="password_length" placeholder="Lunghezza password">
+            <button>Invio</button>
         </form>
-        <p><strong>Password:</strong> <?php echo generatePassword($pass_length, $characters); ?> </p>
+        <?php include 'password.php' ?>
     </div>
 </body>
 

@@ -1,0 +1,17 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 70%;
+    margin: 0 auto;
+    background-color: lightblue;
+    padding: 20px;
+}
+
+input {
+    padding: 10px;
+    margin: 10px 0;
+}

@@ -100,7 +100,9 @@ if (isset($_SESSION['pass_length']) && isset($_SESSION['repetition']) && isset($
                     </div>
                     <div class="buttons">
                         <button class="btn btn-primary">Invio</button>
-                        <button class="btn btn-secondary">Annulla</button>
+                        <button class="btn btn-secondary">
+                            <a class="link-underline link-underline-opacity-0" href="./logout.php">Annulla</a>
+                        </button>
                     </div>
                 </form>
             </div>

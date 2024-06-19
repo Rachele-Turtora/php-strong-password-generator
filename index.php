@@ -3,13 +3,31 @@ session_start();
 
 include 'functions.php';
 
-$characters = array_merge(range('A', 'Z'), range('a', 'z'), range(0, 9), str_split('!@#$%^&*()_+-=[]{}|;:,.<>/?'));
 $_SESSION['pass_length'] = $_GET['password_length'];
 $_SESSION['repetition'] = $_GET['repetitions'];
-$_SESSION['password'] = generatePassword($_SESSION['pass_length'], $characters);
+$_SESSION['check'] = isset($_GET['check']) ? $_GET['check'] : [];
 
-if (isset($_SESSION['pass_length']) && isset($_SESSION['repetition'])) {
+$letters = array_merge(range('A', 'Z'), range('a', 'z'));
+$numbers = range(0, 9);
+$symbols = str_split('!@#$%^&*()_+-=[]{}|;:,.<>/?');
+
+if (in_array('letters', $_SESSION['check'])) {
+    $characters = array_merge($characters, $letters);
+}
+if (in_array('numbers', $_SESSION['check'])) {
+    $characters = array_merge($characters, $numbers);
+}
+if (in_array('symbols', $_SESSION['check'])) {
+    $characters = array_merge($characters, $symbols);
+}
+
+if (!empty($characters)) {
+    $_SESSION['password'] = generatePassword($_SESSION['pass_length'], $characters);
+}
+
+if (isset($_SESSION['pass_length']) && isset($_SESSION['repetition']) && isset($_SESSION['check'])) {
     header('Location: ./password.php');
+    die();
 }
 ?>
 
@@ -25,13 +43,13 @@ if (isset($_SESSION['pass_length']) && isset($_SESSION['repetition'])) {
 </head>
 
 <body>
-    <div class="container h-75">
+    <div class="container h-100 py-3">
         <div class="header text-center">
             <h1>Strong Password Generator</h1>
             <h2 class="text-light">Genera una password sicura</h2>
         </div>
         <div class="d-flex flex-column align-items-center">
-            <?php if (!isset($_SESSION['pass_length']) || !isset($_SESSION['repetition'])) : ?>
+            <?php if (!isset($_SESSION['pass_length']) || !isset($_SESSION['repetition']) || !isset($_SESSION['check'])) : ?>
                 <div class="alert alert-info w-75 p-4" role="alert">
                     Inserisci i parametri
                 </div>
@@ -52,6 +70,28 @@ if (isset($_SESSION['pass_length']) && isset($_SESSION['repetition'])) {
                             <div>
                                 <input class="form-check-input" type="radio" name="repetitions" value="no" id="flexRadio">
                                 <label>No</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="check[]" value="letters" id="letters">
+                                <label class="form-check-label" for="letters">
+                                    Lettere
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="check[]" value="numbers" id="numbers">
+                                <label class="form-check-label" for="numbers">
+                                    Numeri
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="check[]" value="symbols" id="symbols">
+                                <label class="form-check-label" for="symbols">
+                                    Simboli
+                                </label>
                             </div>
                         </div>
                     </div>

@@ -23,15 +23,18 @@ if (in_array('symbols', $_SESSION['check'])) {
     $characters = array_merge($characters, $symbols);
 }
 
+if (!(count($characters) < intval($_SESSION['pass_length']))) {
+    if (!empty($characters)) {
+        $_SESSION['password'] = generatePassword($_SESSION['pass_length'], $characters);
+    }
 
-if (!empty($characters)) {
-    $_SESSION['password'] = generatePassword($_SESSION['pass_length'], $characters);
+    if (isset($_SESSION['pass_length']) && isset($_SESSION['repetition']) && isset($_SESSION['check'])) {
+        header('Location: ./password.php');
+        die();
+    }
 }
 
-if (isset($_SESSION['pass_length']) && isset($_SESSION['repetition']) && isset($_SESSION['check'])) {
-    header('Location: ./password.php');
-    die();
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -54,7 +57,7 @@ if (isset($_SESSION['pass_length']) && isset($_SESSION['repetition']) && isset($
         <div class="d-flex flex-column align-items-center">
             <?php if (!isset($_SESSION['pass_length']) || !isset($_SESSION['repetition']) || !isset($_SESSION['check'])) : ?>
                 <div class="alert alert-info w-75 p-4" role="alert">
-                    Inserisci i parametri
+                    Inserire i parametri
                 </div>
             <?php endif ?>
             <div class="sm-container w-75 p-4 my-3 bg-light rounded">
@@ -63,7 +66,7 @@ if (isset($_SESSION['pass_length']) && isset($_SESSION['repetition']) && isset($
                         <label for="password_length">Lunghezza password: </label>
                         <input type="text" name="password_length" placeholder="Lunghezza password" id="password_length">
                     </div>
-                    <div class="d-flex justify-content-between my-2">
+                    <div class="d-flex justify-content-between my-3">
                         <label class="form-check-label" for="flexRadio"> Consenti ripetizioni di uno o più caratteri: </label>
                         <div class="d-flex flex-column">
                             <div>
@@ -100,14 +103,23 @@ if (isset($_SESSION['pass_length']) && isset($_SESSION['repetition']) && isset($
                     </div>
                     <div class="buttons">
                         <button class="btn btn-primary">Invio</button>
-                        <button class="btn btn-secondary">
+                        <button class="btn btn-secondary px-0">
                             <a class="link-underline link-underline-opacity-0" href="./logout.php">Annulla</a>
                         </button>
                     </div>
                 </form>
             </div>
+            <?php if (count($characters) < intval($_SESSION['pass_length'])) : ?>
+                <div class="alert alert-warning show w-75" role="alert">
+                    Caratteri insufficienti per la lunghezza desiderata della password
+                </div>
+            <?php endif; ?>
         </div>
-        <?php include 'password.php' ?>
+        <?php
+        if (!(count($characters) < intval($_SESSION['pass_length']))) {
+            include 'password.php';
+        }
+        ?>
     </div>
 </body>
 

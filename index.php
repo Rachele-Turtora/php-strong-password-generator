@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include 'functions.php';
+include  'functions.php';
 
 $_SESSION['pass_length'] = $_GET['password_length'];
 $_SESSION['repetition'] = $_GET['repetitions'];
@@ -28,7 +28,7 @@ if (!(count($characters) < intval($_SESSION['pass_length']))) {
         $_SESSION['password'] = generatePassword($_SESSION['pass_length'], $characters);
     }
 
-    if (isset($_SESSION['pass_length']) && isset($_SESSION['repetition']) && isset($_SESSION['check'])) {
+    if (!empty($_SESSION['pass_length']) && isset($_SESSION['repetition']) && isset($_SESSION['check'])) {
         header('Location: ./password.php');
         die();
     }
@@ -55,7 +55,7 @@ if (!(count($characters) < intval($_SESSION['pass_length']))) {
             <h2 class="text-light">Genera una password sicura</h2>
         </div>
         <div class="d-flex flex-column align-items-center">
-            <?php if (!isset($_SESSION['pass_length']) || !isset($_SESSION['repetition']) || !isset($_SESSION['check'])) : ?>
+            <?php if (empty($_SESSION['pass_length']) || !isset($_SESSION['repetition']) || !isset($_SESSION['check'])) : ?>
                 <div class="alert alert-info w-75 p-4" role="alert">
                     Inserire i parametri
                 </div>
@@ -64,7 +64,7 @@ if (!(count($characters) < intval($_SESSION['pass_length']))) {
                 <form action="index.php" method="GET">
                     <div class="d-flex justify-content-between">
                         <label for="password_length">Lunghezza password: </label>
-                        <input type="text" name="password_length" placeholder="Lunghezza password" id="password_length">
+                        <input type="text" name="password_length" placeholder="Inserisci un numero" id="password_length">
                     </div>
                     <div class="d-flex justify-content-between my-3">
                         <label class="form-check-label" for="flexRadio"> Consenti ripetizioni di uno o più caratteri: </label>
